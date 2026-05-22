@@ -8,6 +8,7 @@ This module provides security hardening functions including input validation,
 path sanitization, and sensitive data protection.
 """
 
+import os
 import re
 import logging
 from pathlib import Path
@@ -395,6 +396,25 @@ class SecurityValidator:
         secure_logger.setLevel(logging.INFO)
 
         return secure_logger
+
+    @staticmethod
+    def get_bearer_token() -> str:
+        """
+        Retrieve the Bearer token from the environment variable.
+
+        Returns:
+            Bearer token string
+
+        Raises:
+            ValueError: If the environment variable is not set
+        """
+        token = os.environ.get("RALPH_BEARER_TOKEN")
+        if not token:
+            raise ValueError(
+                "RALPH_BEARER_TOKEN environment variable is not set. "
+                "Please set it to your Bearer token."
+            )
+        return token
 
 
 class PathTraversalProtection:
